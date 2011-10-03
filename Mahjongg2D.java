@@ -25,8 +25,8 @@ public class Mahjongg2D extends JFrame implements ActionListener
 
     /* The game board */
     private Object[][] myBoard; 
-	private static final int kBoardWidth = 12;
-	private static final int kBoardHeight = 8;
+    private static final int kBoardWidth = 12;
+    private static final int kBoardHeight = 8;
 
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
@@ -179,17 +179,17 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Load tile images here
     }
 
-	protected void newGame()
-	{
-		this.myBoard = new Tile[this.kBoardWidth][this.kBoardHeight];
-		for (int width = 0; width < this.kBoardWidth; width++)
-		{
-			for (int height = 0; height < this.kBoardHeight; height++)
-			{
-				this.myBoard[width][height] = new Tile(Tile.Suit.Bamboo, 1);
-			}
-		}
-	}
+    protected void newGame()
+    {
+        this.myBoard = new Tile[this.kBoardWidth][this.kBoardHeight];
+        for (int width = 0; width < this.kBoardWidth; width++)
+        {
+            for (int height = 0; height < this.kBoardHeight; height++)
+            {
+                this.myBoard[width][height] = new Tile(Tile.Suit.Bamboo, 1);
+            }
+        }
+    }
 
     
     /** Handle button clicks
@@ -222,14 +222,14 @@ public class Mahjongg2D extends JFrame implements ActionListener
 
 class Tile
 {
-	public enum Suit {Bamboo, Dots, Characters};
+    public enum Suit {Bamboo, Dots, Characters};
 
-	private Suit suit;
-	private int rank;
+    private Suit suit;
+    private int rank;
 
-	public Tile(Suit suit, int rank)
-	{
-		this.suit = suit;
-		this.rank = rank;
-	}
+    public Tile(Suit suit, int rank)
+    {
+        this.suit = suit;
+        this.rank = rank;
+    }
 }
