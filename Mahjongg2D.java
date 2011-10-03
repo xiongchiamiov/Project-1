@@ -88,6 +88,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
             {  
                 return false;  
             }              
+
+            public Class getColumnClass(int c)
+            {
+                return Tile.class;
+            }
         }
         ; // end table def
        
@@ -220,7 +225,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     
 }  // end class
 
-class Tile
+class Tile extends ImageIcon
 {
     public enum Suit {Bamboo, Dots, Characters};
 
@@ -229,6 +234,11 @@ class Tile
 
     public Tile(Suit suit, int rank)
     {
+        super("img/" + suit.name().substring(0, 1) + rank + ".JPG");
+        if (rank < 1 || rank > 7)
+        {
+            throw new IllegalArgumentException("Rank must be between 1 and 7");
+        }
         this.suit = suit;
         this.rank = rank;
     }
