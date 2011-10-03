@@ -32,6 +32,121 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private static final int kTileWidth = 58;
     private static final int kTileHeight = 78;
 
+    private Tile[][] board1 = {
+        {
+            new Tile(Tile.Suit.Characters, 5),
+            new Tile(Tile.Suit.Characters, 1),
+            new Tile(Tile.Suit.Dots, 7),
+            new Tile(Tile.Suit.Bamboo, 6),
+            new Tile(Tile.Suit.Characters, 7),
+            new Tile(Tile.Suit.Dots, 7),
+            new Tile(Tile.Suit.Dots, 7),
+            new Tile(Tile.Suit.Bamboo, 1),
+            new Tile(Tile.Suit.Dots, 2),
+            new Tile(Tile.Suit.Characters, 4),
+            new Tile(Tile.Suit.Characters, 3),
+            new Tile(Tile.Suit.Characters, 4),
+        },
+        {
+            null,
+            null,
+            new Tile(Tile.Suit.Bamboo, 1),
+            new Tile(Tile.Suit.Dots, 4),
+            new Tile(Tile.Suit.Dots, 1),
+            new Tile(Tile.Suit.Characters, 2),
+            new Tile(Tile.Suit.Characters, 4),
+            new Tile(Tile.Suit.Bamboo, 6),
+            new Tile(Tile.Suit.Characters, 3),
+            new Tile(Tile.Suit.Characters, 4),
+            null,
+            null,
+        },
+        {
+            null,
+            new Tile(Tile.Suit.Dots, 5),
+            new Tile(Tile.Suit.Characters, 6),
+            new Tile(Tile.Suit.Bamboo, 7),
+            new Tile(Tile.Suit.Bamboo, 1),
+            new Tile(Tile.Suit.Dots, 1),
+            new Tile(Tile.Suit.Dots, 3),
+            new Tile(Tile.Suit.Characters, 5),
+            new Tile(Tile.Suit.Bamboo, 4),
+            new Tile(Tile.Suit.Bamboo, 6),
+            new Tile(Tile.Suit.Dots, 6),
+            null,
+        },
+        {
+            new Tile(Tile.Suit.Bamboo, 3),
+            new Tile(Tile.Suit.Dots, 3),
+            new Tile(Tile.Suit.Bamboo, 7),
+            new Tile(Tile.Suit.Dots, 4),
+            new Tile(Tile.Suit.Bamboo, 4),
+            new Tile(Tile.Suit.Bamboo, 5),
+            new Tile(Tile.Suit.Characters, 1),
+            new Tile(Tile.Suit.Bamboo, 5),
+            new Tile(Tile.Suit.Characters, 5),
+            new Tile(Tile.Suit.Dots, 6),
+            new Tile(Tile.Suit.Dots, 6),
+            new Tile(Tile.Suit.Characters, 2),
+        },
+        {
+            new Tile(Tile.Suit.Dots, 4),
+            new Tile(Tile.Suit.Dots, 1),
+            new Tile(Tile.Suit.Dots, 4),
+            new Tile(Tile.Suit.Dots, 5),
+            new Tile(Tile.Suit.Dots, 2),
+            new Tile(Tile.Suit.Characters, 5),
+            new Tile(Tile.Suit.Dots, 1),
+            new Tile(Tile.Suit.Bamboo, 2),
+            new Tile(Tile.Suit.Characters, 6),
+            new Tile(Tile.Suit.Characters, 2),
+            new Tile(Tile.Suit.Dots, 3),
+            new Tile(Tile.Suit.Characters, 1),
+        },
+        {
+            null,
+            new Tile(Tile.Suit.Bamboo, 2),
+            new Tile(Tile.Suit.Characters, 1),
+            new Tile(Tile.Suit.Dots, 3),
+            new Tile(Tile.Suit.Bamboo, 7),
+            new Tile(Tile.Suit.Bamboo, 3),
+            new Tile(Tile.Suit.Characters, 6),
+            new Tile(Tile.Suit.Bamboo, 3),
+            new Tile(Tile.Suit.Dots, 2),
+            new Tile(Tile.Suit.Characters, 7),
+            new Tile(Tile.Suit.Bamboo, 3),
+            null,
+        },
+        {
+            null,
+            null,
+            new Tile(Tile.Suit.Characters, 7),
+            new Tile(Tile.Suit.Characters, 2),
+            new Tile(Tile.Suit.Dots, 6),
+            new Tile(Tile.Suit.Characters, 3),
+            new Tile(Tile.Suit.Bamboo, 5),
+            new Tile(Tile.Suit.Bamboo, 1),
+            new Tile(Tile.Suit.Characters, 7),
+            new Tile(Tile.Suit.Bamboo, 4),
+            null,
+            null,
+        },
+        {
+            new Tile(Tile.Suit.Dots, 5),
+            new Tile(Tile.Suit.Bamboo, 2),
+            new Tile(Tile.Suit.Bamboo, 7),
+            new Tile(Tile.Suit.Characters, 6),
+            new Tile(Tile.Suit.Bamboo, 4),
+            new Tile(Tile.Suit.Dots, 2),
+            new Tile(Tile.Suit.Bamboo, 6),
+            new Tile(Tile.Suit.Bamboo, 2),
+            new Tile(Tile.Suit.Bamboo, 5),
+            new Tile(Tile.Suit.Dots, 5),
+            new Tile(Tile.Suit.Characters, 3),
+            new Tile(Tile.Suit.Dots, 7),
+        },
+    };
+
     
     /** Create a GUI.
      * Will use the System Look and Feel when possible.
@@ -187,13 +302,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     protected void newGame()
     {
         this.myBoard = new Tile[this.kBoardWidth][this.kBoardHeight];
-        for (int width = 0; width < this.kBoardWidth; width++)
-        {
-            for (int height = 0; height < this.kBoardHeight; height++)
-            {
-                this.myBoard[width][height] = new Tile(Tile.Suit.Bamboo, 1);
-            }
-        }
+        this.myBoard = this.board1;
     }
 
     
