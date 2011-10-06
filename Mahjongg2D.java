@@ -2,7 +2,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.util.LinkedList;
 import java.text.*;
 
 /**  Skeleton for Mahjongg2D. 
@@ -29,6 +29,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private static final int kBoardHeight = 8;
     private static int gameNumber = 0;
     private static final int[] blankEdgeTiles = { 0, 2, 1, 0, 0, 1, 2, 0 };
+    private int tileCount;
 
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
@@ -61,6 +62,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     {
         loadImages();
         newGame();
+        startTimer();
         table = new JTable(this.myBoard, this.columns)
         {
             public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
@@ -119,8 +121,8 @@ public class Mahjongg2D extends JFrame implements ActionListener
         
         // Create a panel for the status information
         JPanel statusPane = new JPanel();
-        statusPane.add(lblStatus);
-        lblStatus.setName("Status");
+        statusPane.add(this.lblStatus);
+        this.lblStatus.setName("Status");
         statusPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         getContentPane().add(statusPane);
 
@@ -190,6 +192,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     {
         this.gameNumber++;
         this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
+        this.tileCount = 0;
 
         // Make a list of all the tiles, in nice predictable order.
         // Needs to be a LinkedList specifically, since we're calling .pop().
@@ -225,9 +228,29 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 else
                 {
                     this.myBoard[line][column] = tiles.pop();
+                    this.tileCount++;
                 }
             }
         }
+    }
+
+    protected void startTimer()
+    {
+        // Every 1 second.
+        Timer timer = new Timer(1000, new ActionListener()
+        {
+            private int secondsElapsed = 0;
+            public void actionPerformed(ActionEvent e)
+            {
+                Mahjongg2D.this.lblStatus.setText("Tiles Left: " + Mahjongg2D.this.tileCount + "  "
+                                                + "Time: " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
+                this.secondsElapsed++;
+            }
+        });
+        // Start immediately.
+        timer.setInitialDelay(0);
+
+        timer.start();
     }
 
     
