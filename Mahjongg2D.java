@@ -27,125 +27,12 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private Object[][] myBoard; 
     private static final int kBoardWidth = 12;
     private static final int kBoardHeight = 8;
+    private static int gameNumber = 0;
+    private static final int[] blankEdgeTiles = { 0, 2, 1, 0, 0, 1, 2, 0 };
 
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
     private static final int kTileHeight = 78;
-
-    private Tile[][] board1 = {
-        {
-            new Tile(Tile.Suit.Characters, 5),
-            new Tile(Tile.Suit.Characters, 1),
-            new Tile(Tile.Suit.Dots, 7),
-            new Tile(Tile.Suit.Bamboo, 6),
-            new Tile(Tile.Suit.Characters, 7),
-            new Tile(Tile.Suit.Dots, 7),
-            new Tile(Tile.Suit.Dots, 7),
-            new Tile(Tile.Suit.Bamboo, 1),
-            new Tile(Tile.Suit.Dots, 2),
-            new Tile(Tile.Suit.Characters, 4),
-            new Tile(Tile.Suit.Characters, 3),
-            new Tile(Tile.Suit.Characters, 4),
-        },
-        {
-            null,
-            null,
-            new Tile(Tile.Suit.Bamboo, 1),
-            new Tile(Tile.Suit.Dots, 4),
-            new Tile(Tile.Suit.Dots, 1),
-            new Tile(Tile.Suit.Characters, 2),
-            new Tile(Tile.Suit.Characters, 4),
-            new Tile(Tile.Suit.Bamboo, 6),
-            new Tile(Tile.Suit.Characters, 3),
-            new Tile(Tile.Suit.Characters, 4),
-            null,
-            null,
-        },
-        {
-            null,
-            new Tile(Tile.Suit.Dots, 5),
-            new Tile(Tile.Suit.Characters, 6),
-            new Tile(Tile.Suit.Bamboo, 7),
-            new Tile(Tile.Suit.Bamboo, 1),
-            new Tile(Tile.Suit.Dots, 1),
-            new Tile(Tile.Suit.Dots, 3),
-            new Tile(Tile.Suit.Characters, 5),
-            new Tile(Tile.Suit.Bamboo, 4),
-            new Tile(Tile.Suit.Bamboo, 6),
-            new Tile(Tile.Suit.Dots, 6),
-            null,
-        },
-        {
-            new Tile(Tile.Suit.Bamboo, 3),
-            new Tile(Tile.Suit.Dots, 3),
-            new Tile(Tile.Suit.Bamboo, 7),
-            new Tile(Tile.Suit.Dots, 4),
-            new Tile(Tile.Suit.Bamboo, 4),
-            new Tile(Tile.Suit.Bamboo, 5),
-            new Tile(Tile.Suit.Characters, 1),
-            new Tile(Tile.Suit.Bamboo, 5),
-            new Tile(Tile.Suit.Characters, 5),
-            new Tile(Tile.Suit.Dots, 6),
-            new Tile(Tile.Suit.Dots, 6),
-            new Tile(Tile.Suit.Characters, 2),
-        },
-        {
-            new Tile(Tile.Suit.Dots, 4),
-            new Tile(Tile.Suit.Dots, 1),
-            new Tile(Tile.Suit.Dots, 4),
-            new Tile(Tile.Suit.Dots, 5),
-            new Tile(Tile.Suit.Dots, 2),
-            new Tile(Tile.Suit.Characters, 5),
-            new Tile(Tile.Suit.Dots, 1),
-            new Tile(Tile.Suit.Bamboo, 2),
-            new Tile(Tile.Suit.Characters, 6),
-            new Tile(Tile.Suit.Characters, 2),
-            new Tile(Tile.Suit.Dots, 3),
-            new Tile(Tile.Suit.Characters, 1),
-        },
-        {
-            null,
-            new Tile(Tile.Suit.Bamboo, 2),
-            new Tile(Tile.Suit.Characters, 1),
-            new Tile(Tile.Suit.Dots, 3),
-            new Tile(Tile.Suit.Bamboo, 7),
-            new Tile(Tile.Suit.Bamboo, 3),
-            new Tile(Tile.Suit.Characters, 6),
-            new Tile(Tile.Suit.Bamboo, 3),
-            new Tile(Tile.Suit.Dots, 2),
-            new Tile(Tile.Suit.Characters, 7),
-            new Tile(Tile.Suit.Bamboo, 3),
-            null,
-        },
-        {
-            null,
-            null,
-            new Tile(Tile.Suit.Characters, 7),
-            new Tile(Tile.Suit.Characters, 2),
-            new Tile(Tile.Suit.Dots, 6),
-            new Tile(Tile.Suit.Characters, 3),
-            new Tile(Tile.Suit.Bamboo, 5),
-            new Tile(Tile.Suit.Bamboo, 1),
-            new Tile(Tile.Suit.Characters, 7),
-            new Tile(Tile.Suit.Bamboo, 4),
-            null,
-            null,
-        },
-        {
-            new Tile(Tile.Suit.Dots, 5),
-            new Tile(Tile.Suit.Bamboo, 2),
-            new Tile(Tile.Suit.Bamboo, 7),
-            new Tile(Tile.Suit.Characters, 6),
-            new Tile(Tile.Suit.Bamboo, 4),
-            new Tile(Tile.Suit.Dots, 2),
-            new Tile(Tile.Suit.Bamboo, 6),
-            new Tile(Tile.Suit.Bamboo, 2),
-            new Tile(Tile.Suit.Bamboo, 5),
-            new Tile(Tile.Suit.Dots, 5),
-            new Tile(Tile.Suit.Characters, 3),
-            new Tile(Tile.Suit.Dots, 7),
-        },
-    };
 
     
     /** Create a GUI.
@@ -301,8 +188,46 @@ public class Mahjongg2D extends JFrame implements ActionListener
 
     protected void newGame()
     {
-        this.myBoard = new Tile[this.kBoardWidth][this.kBoardHeight];
-        this.myBoard = this.board1;
+        this.gameNumber++;
+        this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
+
+        // Make a list of all the tiles, in nice predictable order.
+        // Needs to be a LinkedList specifically, since we're calling .pop().
+        LinkedList<Tile> tiles = new LinkedList<Tile>();
+        Tile.Suit[] suits = { Tile.Suit.Bamboo, Tile.Suit.Characters, Tile.Suit.Dots };
+        for (int rank = 1; rank < 8; rank++)
+        {
+            for (Tile.Suit suit : suits)
+            {
+                // There are four of each tile.
+                for (int i = 0; i < 4; i++)
+                {
+                    tiles.add(new Tile(suit, rank));
+                }
+            }
+        }
+
+        // Shuffle a bitch.
+        java.util.Random generator = new java.util.Random(this.gameNumber);
+        java.util.Collections.shuffle(tiles, generator);
+
+        // Put our shuffled tiles onto the board.
+        for (int line = 0; line < this.kBoardHeight; line++)
+        {
+            for (int column = 0; column < this.kBoardWidth; column++)
+            {
+                if (column < this.blankEdgeTiles[line]
+                 || column > this.kBoardWidth - this.blankEdgeTiles[line] - 1
+                 || tiles.isEmpty())
+                {
+                    this.myBoard[line][column] = null;
+                }
+                else
+                {
+                    this.myBoard[line][column] = tiles.pop();
+                }
+            }
+        }
     }
 
     
