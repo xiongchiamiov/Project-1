@@ -163,6 +163,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
         mnuItems[0].setAccelerator(KeyStroke.getKeyStroke('R', ActionEvent.ALT_MASK));
         mnuItems[0].addActionListener(this);
         mnuGame.add(mnuItems[0]);
+
+        mnuItems[3] = new JMenuItem("Cheat");
+        mnuItems[3].setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.ALT_MASK));
+        mnuItems[3].addActionListener(this);
+        mnuGame.add(mnuItems[3]);
         
         setJMenuBar(menuBar);   // tell the frame which menu bar to use
     }
@@ -267,7 +272,27 @@ public class Mahjongg2D extends JFrame implements ActionListener
         {
             // call restart method
         }
+        else if ("Cheat".equals(e.getActionCommand()))
+        {
+            clearBoard();
+            this.myBoard[(this.kBoardHeight / 2) - 1][(this.kBoardWidth / 2) - 1] = new Tile(Tile.Suit.Bamboo, 1);
+            this.myBoard[(this.kBoardHeight / 2) - 1][(this.kBoardWidth / 2)] = new Tile(Tile.Suit.Bamboo, 1);
+            this.tileCount = 2;
+            updateStatusBar();
+            // TODO: Register tile clicks.
+        }
         repaint();
+    }
+
+    protected void clearBoard()
+    {
+        for (int row = 0; row < this.kBoardHeight; row++)
+        {
+            for (int column = 0; column < this.kBoardWidth; column++)
+            {
+                this.myBoard[row][column] = null;
+            }
+        }
     }
     
     protected void clickTile(final int row, final int column)
