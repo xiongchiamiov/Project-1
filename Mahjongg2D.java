@@ -288,7 +288,8 @@ public class Mahjongg2D extends JFrame implements ActionListener
             Tile tile1 = (Tile)this.myBoard[this.firstTileRow][this.firstTileColumn];
             Tile tile2 = (Tile)this.myBoard[row][column];
 
-            if (tile1.equals(tile2) && isEdgeTile(this.firstTileRow, this.firstTileColumn) && isEdgeTile(row, column))
+            if (this.firstTileRow != row && this.firstTileColumn != column
+             && tile1.equals(tile2) && isEdgeTile(this.firstTileRow, this.firstTileColumn) && isEdgeTile(row, column))
             {
                 System.out.println("  edge pair");
                 this.myBoard[this.firstTileRow][this.firstTileColumn] = this.myBoard[row][column] = null;
