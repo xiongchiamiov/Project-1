@@ -32,6 +32,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private int tileCount;
     private int firstTileRow = -1;
     private int firstTileColumn = -1;
+    private int secondsElapsed = 0;
 
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
@@ -242,18 +243,21 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Every 1 second.
         Timer timer = new Timer(1000, new ActionListener()
         {
-            private int secondsElapsed = 0;
             public void actionPerformed(ActionEvent e)
             {
-                Mahjongg2D.this.lblStatus.setText("Tiles Left: " + Mahjongg2D.this.tileCount + "  "
-                                                + "Time: " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
-                this.secondsElapsed++;
+                Mahjongg2D.this.secondsElapsed++;
+                Mahjongg2D.this.updateStatusBar();
             }
         });
-        // Start immediately.
-        timer.setInitialDelay(0);
 
+        Mahjongg2D.this.updateStatusBar();
         timer.start();
+    }
+
+    protected void updateStatusBar()
+    {
+       this.lblStatus.setText("Tiles Left: " + this.tileCount + "  "
+                            + "Time: " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
     }
 
     
@@ -289,6 +293,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 System.out.println("  edge pair");
                 this.myBoard[this.firstTileRow][this.firstTileColumn] = this.myBoard[row][column] = null;
                 this.tileCount -= 2;
+                this.updateStatusBar();
             }
 
             // Reset our state variables.
