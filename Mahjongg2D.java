@@ -30,6 +30,8 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private static int gameNumber = 0;
     private static final int[] blankEdgeTiles = { 0, 2, 1, 0, 0, 1, 2, 0 };
     private int tileCount;
+    private int firstTileRow = -1;
+    private int firstTileColumn = -1;
 
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
@@ -175,6 +177,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
             int col = table.getSelectedColumn();
             int row = table.getSelectedRow();
             // call methods to handle player's click
+            clickTile(row, col);
             repaint();
         }
     };
@@ -266,6 +269,89 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         repaint();
     }
+
+    protected void clickTile(final int row, final int column)
+    {
+        // Basic sanity check.
+        if (row < 0 || row > this.kBoardHeight || column < 0 || column > this.kBoardWidth)
+        {
+            throw new IllegalArgumentException("Tile must be on the board.");
+        }
+
+        // Do we already have a first tile in the pair we want to compare?
+        if (this.firstTileRow > -1 && this.firstTileColumn > -1)
+        {
+            Tile tile1 = (Tile)this.myBoard[this.firstTileRow][this.firstTileColumn];
+            Tile tile2 = (Tile)this.myBoard[row][column];
+
+            if (tile1.equals(tile2) && isEdgeTile(this.firstTileRow, this.firstTileColumn) && isEdgeTile(row, column))
+            {
+                System.out.println("  edge pair");
+                this.myBoard[this.firstTileRow][this.firstTileColumn] = this.myBoard[row][column] = null;
+                this.tileCount -= 2;
+            }
+
+            // Reset our state variables.
+            this.firstTileRow = -1;
+            this.firstTileColumn = -1;
+        }
+        else
+        {
+            this.firstTileRow = row;
+            this.firstTileColumn = column;
+        }
+    }
+
+    protected boolean isEdgeTile(final int row, final int column)
+    {
+        System.out.println("Checking edgeness of tile at (" + row + ", " + column + ")");
+        // Basic sanity check.
+        if (row < 0 || row > this.kBoardHeight || column < 0 || column > this.kBoardWidth)
+        {
+            throw new IllegalArgumentException("Tile must be on the board.");
+        }
+
+        // Style guidelines prevent use of the 'break' statement.  So, poor man's break.
+        boolean kontinue = true;
+        // Is this a left-side tile?
+        int i = 0;
+        while (kontinue)
+        {
+            if (this.myBoard[row][i] != null)
+            {
+                if (i == column)
+                {
+                    return true;
+                }
+                // Nope, we reached a non-null tile that isn't the one we want.
+                else
+                {
+                    kontinue = false;
+                }
+            }
+
+            i++;
+        }
+
+        // Is this a right-side tile?
+        i = column + 1;
+        while (true)
+        {
+            // We reached the end of the row.  Congratulations!
+            if (i == this.kBoardWidth)
+            {
+                return true;
+            }
+
+            // Nope, there's a tile to the right of the one we're examining.
+            if (this.myBoard[row][i] != null)
+            {
+                return false;
+            }
+
+            i++;
+        }
+    }
    
     // Local main to launch the GUI
     public static void main(String[] args)
@@ -298,5 +384,19 @@ class Tile extends ImageIcon
         }
         this.suit = suit;
         this.rank = rank;
+    }
+
+    public boolean equals(Object other)
+    {
+        if (other instanceof Tile)
+        {
+            Tile otherTile = (Tile)other;
+            if (this.suit == otherTile.suit && this.rank == otherTile.rank)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
