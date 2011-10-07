@@ -22,7 +22,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private JMenuItem[] mnuItems;    
     private JLabel lblStatus = new JLabel();
     private ImageIcon background;
-
+    
     /* The game board */
     private Object[][] myBoard; 
     private static final int kBoardWidth = 12;
@@ -33,11 +33,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
     private int firstTileRow = -1;
     private int firstTileColumn = -1;
     private int secondsElapsed = 0;
-
+    
     /* Square dimensions in pixels */
     private static final int kTileWidth = 58;
     private static final int kTileHeight = 78;
-
+    
     
     /** Create a GUI.
      * Will use the System Look and Feel when possible.
@@ -54,10 +54,8 @@ public class Mahjongg2D extends JFrame implements ActionListener
         {
             System.err.println(ex);
         }
-
     }
-
-
+    
     /** Place all the Swing widgets in the frame of this GUI.
      * @post the GUI is visible.  
      */
@@ -77,7 +75,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
                     ((JComponent)c).setOpaque(false);
                 return c;
             }
-
+            
             // Override paint so as to show the table background
             public void paint( Graphics g )
             {
@@ -95,14 +93,14 @@ public class Mahjongg2D extends JFrame implements ActionListener
             {  
                 return false;  
             }              
-
+            
             public Class getColumnClass(int c)
             {
                 return Tile.class;
             }
         }
         ; // end table def
-       
+        
         TableColumn column = null;
         // Does the board exist?
         if (this.myBoard != null)
@@ -115,7 +113,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 column.setMinWidth(kTileWidth);
             }
         }
-
+        
         // Define the layout manager that will control order of components
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         
@@ -128,7 +126,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         this.lblStatus.setName("Status");
         statusPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         getContentPane().add(statusPane);
-
+        
         // Define the characteristics of the table that shows the game board        
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.setCellSelectionEnabled(false);
@@ -137,7 +135,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         table.setShowGrid(false);
         table.setAlignmentX(Component.CENTER_ALIGNMENT);
         getContentPane().add(table);
-
+        
         // Define the mouse listener that will handle player's clicks.
         table.addMouseListener(myMouseListener);
         
@@ -150,7 +148,6 @@ public class Mahjongg2D extends JFrame implements ActionListener
             }
         }
         );
-
     } // end layout
     
     private void layoutMenus()
@@ -166,10 +163,10 @@ public class Mahjongg2D extends JFrame implements ActionListener
         mnuItems[0].setAccelerator(KeyStroke.getKeyStroke('R', ActionEvent.ALT_MASK));
         mnuItems[0].addActionListener(this);
         mnuGame.add(mnuItems[0]);
-
+        
         setJMenuBar(menuBar);   // tell the frame which menu bar to use
     }
-
+    
     /* Listener to respond to mouse clicks on the table */
     private MouseAdapter myMouseListener = new MouseAdapter()
     {
@@ -191,13 +188,13 @@ public class Mahjongg2D extends JFrame implements ActionListener
                         this.getClass().getResource("img/" + "bkgd.jpg")));
         // Load tile images here
     }
-
+    
     protected void newGame()
     {
         this.gameNumber++;
         this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
         this.tileCount = 0;
-
+        
         // Make a list of all the tiles, in nice predictable order.
         // Needs to be a LinkedList specifically, since we're calling .pop().
         LinkedList<Tile> tiles = new LinkedList<Tile>();
@@ -213,11 +210,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 }
             }
         }
-
+        
         // Shuffle a bitch.
         java.util.Random generator = new java.util.Random(this.gameNumber);
         java.util.Collections.shuffle(tiles, generator);
-
+        
         // Put our shuffled tiles onto the board.
         for (int line = 0; line < this.kBoardHeight; line++)
         {
@@ -237,7 +234,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
             }
         }
     }
-
+    
     protected void startTimer()
     {
         // Every 1 second.
@@ -249,17 +246,16 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 Mahjongg2D.this.updateStatusBar();
             }
         });
-
+        
         Mahjongg2D.this.updateStatusBar();
         timer.start();
     }
-
+    
     protected void updateStatusBar()
     {
        this.lblStatus.setText("Tiles Left: " + this.tileCount + "  "
                             + "Time: " + this.secondsElapsed / 60 + ":" + String.format("%02d", this.secondsElapsed % 60));
     }
-
     
     /** Handle button clicks
      * @param e The result of what was clicked
@@ -273,7 +269,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         repaint();
     }
-
+    
     protected void clickTile(final int row, final int column)
     {
         // Basic sanity check.
@@ -281,13 +277,13 @@ public class Mahjongg2D extends JFrame implements ActionListener
         {
             throw new IllegalArgumentException("Tile must be on the board.");
         }
-
+        
         // Do we already have a first tile in the pair we want to compare?
         if (this.firstTileRow > -1 && this.firstTileColumn > -1)
         {
             Tile tile1 = (Tile)this.myBoard[this.firstTileRow][this.firstTileColumn];
             Tile tile2 = (Tile)this.myBoard[row][column];
-
+            
             if (this.firstTileRow != row && this.firstTileColumn != column
              && tile1.equals(tile2) && isEdgeTile(this.firstTileRow, this.firstTileColumn) && isEdgeTile(row, column))
             {
@@ -296,7 +292,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 this.tileCount -= 2;
                 this.updateStatusBar();
             }
-
+            
             // Reset our state variables.
             this.firstTileRow = -1;
             this.firstTileColumn = -1;
@@ -307,7 +303,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
             this.firstTileColumn = column;
         }
     }
-
+    
     protected boolean isEdgeTile(final int row, final int column)
     {
         System.out.println("Checking edgeness of tile at (" + row + ", " + column + ")");
@@ -316,7 +312,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         {
             throw new IllegalArgumentException("Tile must be on the board.");
         }
-
+        
         // Style guidelines prevent use of the 'break' statement.  So, poor man's break.
         boolean kontinue = true;
         // Is this a left-side tile?
@@ -335,10 +331,10 @@ public class Mahjongg2D extends JFrame implements ActionListener
                     kontinue = false;
                 }
             }
-
+            
             i++;
         }
-
+        
         // Is this a right-side tile?
         i = column + 1;
         while (true)
@@ -348,39 +344,38 @@ public class Mahjongg2D extends JFrame implements ActionListener
             {
                 return true;
             }
-
+            
             // Nope, there's a tile to the right of the one we're examining.
             if (this.myBoard[row][i] != null)
             {
                 return false;
             }
-
+            
             i++;
         }
     }
-   
+    
     // Local main to launch the GUI
     public static void main(String[] args)
     {
         // Create the GUI 
         Mahjongg2D frame = new Mahjongg2D();
-
+        
         frame.layoutGUI();   // do the layout of widgets
-               
+        
         // Make the GUI visible and available for user interaction
         frame.pack();
         frame.setVisible(true);
     }
-    
 }  // end class
 
 class Tile extends ImageIcon
 {
     public enum Suit {Bamboo, Dots, Characters};
-
+    
     private Suit suit;
     private int rank;
-
+    
     public Tile(Suit suit, int rank)
     {
         super("img/" + suit.name().substring(0, 1) + rank + ".JPG");
@@ -391,7 +386,7 @@ class Tile extends ImageIcon
         this.suit = suit;
         this.rank = rank;
     }
-
+    
     public boolean equals(Object other)
     {
         if (other instanceof Tile)
@@ -402,7 +397,8 @@ class Tile extends ImageIcon
                 return true;
             }
         }
-
+        
         return false;
     }
 }
+
