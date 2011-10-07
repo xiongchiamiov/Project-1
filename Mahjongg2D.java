@@ -279,7 +279,6 @@ public class Mahjongg2D extends JFrame implements ActionListener
             this.myBoard[(this.kBoardHeight / 2) - 1][(this.kBoardWidth / 2)] = new Tile(Tile.Suit.Bamboo, 1);
             this.tileCount = 2;
             updateStatusBar();
-            // TODO: Register tile clicks.
         }
         repaint();
     }
@@ -306,6 +305,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Do we already have a first tile in the pair we want to compare?
         if (this.firstTileRow > -1 && this.firstTileColumn > -1)
         {
+            System.out.println("Second tile: (" + row + ", " + column + ")");
             Tile tile1 = (Tile)this.myBoard[this.firstTileRow][this.firstTileColumn];
             Tile tile2 = (Tile)this.myBoard[row][column];
             
@@ -316,6 +316,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 this.myBoard[this.firstTileRow][this.firstTileColumn] = this.myBoard[row][column] = null;
                 this.tileCount -= 2;
                 this.updateStatusBar();
+
+                if (this.tileCount == 0)
+                {
+                    JOptionPane.showMessageDialog(this, "You win!");
+                }
             }
             
             // Reset our state variables.
@@ -324,6 +329,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         else
         {
+            System.out.println("First tile: (" + row + ", " + column + ")");
             this.firstTileRow = row;
             this.firstTileColumn = column;
         }
