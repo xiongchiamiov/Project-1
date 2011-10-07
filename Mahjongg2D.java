@@ -164,11 +164,26 @@ public class Mahjongg2D extends JFrame implements ActionListener
         mnuItems[0].addActionListener(this);
         mnuGame.add(mnuItems[0]);
 
+        mnuItems[1] = new JMenuItem("New Game");
+        mnuItems[1].setAccelerator(KeyStroke.getKeyStroke('N', ActionEvent.ALT_MASK));
+        mnuItems[1].addActionListener(this);
+        mnuGame.add(mnuItems[1]);
+
+        mnuItems[2] = new JMenuItem("Hint");
+        mnuItems[2].setAccelerator(KeyStroke.getKeyStroke('H', ActionEvent.ALT_MASK));
+        mnuItems[2].addActionListener(this);
+        mnuGame.add(mnuItems[2]);
+
         mnuItems[3] = new JMenuItem("Cheat");
         mnuItems[3].setAccelerator(KeyStroke.getKeyStroke('C', ActionEvent.ALT_MASK));
         mnuItems[3].addActionListener(this);
         mnuGame.add(mnuItems[3]);
         
+        mnuItems[4] = new JMenuItem("Quit");
+        mnuItems[4].setAccelerator(KeyStroke.getKeyStroke('Q', ActionEvent.ALT_MASK));
+        mnuItems[4].addActionListener(this);
+        mnuGame.add(mnuItems[4]);
+
         setJMenuBar(menuBar);   // tell the frame which menu bar to use
     }
     
@@ -270,7 +285,15 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Does the user want to restart the current game?
         if ("Restart".equals(e.getActionCommand()))
         {
-            // call restart method
+            // TODO
+        }
+        else if ("New Game".equals(e.getActionCommand()))
+        {
+            // TODO
+        }
+        else if ("Hint".equals(e.getActionCommand()))
+        {
+            // TODO
         }
         else if ("Cheat".equals(e.getActionCommand()))
         {
@@ -279,6 +302,10 @@ public class Mahjongg2D extends JFrame implements ActionListener
             this.myBoard[(this.kBoardHeight / 2) - 1][(this.kBoardWidth / 2)] = new Tile(Tile.Suit.Bamboo, 1);
             this.tileCount = 2;
             updateStatusBar();
+        }
+        else if ("Quit".equals(e.getActionCommand()))
+        {
+            // TODO
         }
         repaint();
     }
