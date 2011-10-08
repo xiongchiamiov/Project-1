@@ -371,11 +371,18 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 {
                     JOptionPane.showMessageDialog(this, "You win!");
                 }
+                
+                // Reset our state variables.
+                this.firstTileRow = -1;
+                this.firstTileColumn = -1;
             }
-            
-            // Reset our state variables.
-            this.firstTileRow = -1;
-            this.firstTileColumn = -1;
+            // Nope, those tiles aren't a valid match.
+            else
+            {
+                // Let the second-clicked tile become our new selected "first" tile.
+                this.firstTileRow = row;
+                this.firstTileColumn = column;
+            }
         }
         else
         {
