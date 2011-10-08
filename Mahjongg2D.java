@@ -305,7 +305,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         else if ("Quit".equals(e.getActionCommand()))
         {
-            // TODO
+            System.exit(0);
         }
         repaint();
     }
