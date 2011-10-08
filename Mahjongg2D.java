@@ -2,6 +2,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.text.*;
 
@@ -309,7 +310,15 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         else if ("Hint".equals(e.getActionCommand()))
         {
-            // TODO
+            Tile hintTile = findOpenPair();
+            if (hintTile == null)
+            {
+                JOptionPane.showMessageDialog(this, "No moves available.");
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(this, "Hint: " + hintTile.toString());
+            }
         }
         else if ("Cheat".equals(e.getActionCommand()))
         {
@@ -391,7 +400,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
         boolean kontinue = true;
         // Is this a left-side tile?
         int i = 0;
-        while (kontinue)
+        while (kontinue && i < this.kBoardWidth)
         {
             if (this.myBoard[row][i] != null)
             {
@@ -428,6 +437,43 @@ public class Mahjongg2D extends JFrame implements ActionListener
             i++;
         }
     }
+
+    protected Tile findOpenPair()
+    {
+        java.util.List<Tile> edgeTiles = edgeTiles();
+        Collections.<Tile>sort(edgeTiles);
+
+        Tile previous = null;
+        for (Tile current : edgeTiles)
+        {
+            if (current.equals(previous))
+            {
+                return current;
+            }
+
+            previous = current;
+        }
+
+        return null;
+    }
+
+    protected java.util.List<Tile> edgeTiles()
+    {
+        // This is a lazy and terribly inefficient way to do this.
+        java.util.List<Tile> edgeTiles = new LinkedList<Tile>();
+        for (int row = 0; row < this.kBoardHeight; row++)
+        {
+            for (int column = 0; column < this.kBoardWidth; column++)
+            {
+                if (isEdgeTile(row, column) && this.myBoard[row][column] != null)
+                {
+                    edgeTiles.add((Tile)this.myBoard[row][column]);
+                }
+            }
+        }
+        
+        return edgeTiles;
+    }
     
     // Local main to launch the GUI
     public static void main(String[] args)
@@ -443,7 +489,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
     }
 }  // end class
 
-class Tile extends ImageIcon
+class Tile extends ImageIcon implements Comparable<Tile>
 {
     public enum Suit {Bamboo, Dots, Characters};
     
@@ -473,6 +519,21 @@ class Tile extends ImageIcon
         }
         
         return false;
+    }
+
+    public int compareTo(Tile other)
+    {
+        if (this.suit == other.suit)
+        {
+            return new Integer(this.rank).compareTo(other.rank);
+        }
+
+        return new Integer(this.suit.ordinal()).compareTo(other.suit.ordinal());
+    }
+
+    public String toString()
+    {
+        return this.suit.name() + " " + this.rank;
     }
 }
 
