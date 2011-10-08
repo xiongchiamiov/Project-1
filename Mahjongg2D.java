@@ -498,7 +498,7 @@ class Tile extends ImageIcon implements Comparable<Tile>
     
     public Tile(Suit suit, int rank)
     {
-        super("img/" + suit.name().substring(0, 1) + rank + ".JPG");
+        super(Toolkit.getDefaultToolkit().getImage(Mahjongg2D.class.getResource("img/" + suit.name().substring(0, 1) + rank + ".JPG")));
         if (rank < 1 || rank > 7)
         {
             throw new IllegalArgumentException("Rank must be between 1 and 7");
@@ -527,7 +527,7 @@ class Tile extends ImageIcon implements Comparable<Tile>
         {
             return new Integer(this.rank).compareTo(other.rank);
         }
-
+        
         return new Integer(this.suit.ordinal()).compareTo(other.suit.ordinal());
     }
 
