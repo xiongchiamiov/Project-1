@@ -357,14 +357,12 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Do we already have a first tile in the pair we want to compare?
         if (this.firstTileRow > -1 && this.firstTileColumn > -1)
         {
-            System.out.println("Second tile: (" + row + ", " + column + ")");
             Tile tile1 = (Tile)this.myBoard[this.firstTileRow][this.firstTileColumn];
             Tile tile2 = (Tile)this.myBoard[row][column];
             
             if (!(this.firstTileRow == row && this.firstTileColumn == column)
              && tile1.equals(tile2) && isEdgeTile(this.firstTileRow, this.firstTileColumn) && isEdgeTile(row, column))
             {
-                System.out.println("  edge pair");
                 this.myBoard[this.firstTileRow][this.firstTileColumn] = this.myBoard[row][column] = null;
                 this.tileCount -= 2;
                 this.updateStatusBar();
@@ -381,7 +379,6 @@ public class Mahjongg2D extends JFrame implements ActionListener
         }
         else
         {
-            System.out.println("First tile: (" + row + ", " + column + ")");
             this.firstTileRow = row;
             this.firstTileColumn = column;
         }
@@ -389,7 +386,6 @@ public class Mahjongg2D extends JFrame implements ActionListener
     
     protected boolean isEdgeTile(final int row, final int column)
     {
-        System.out.println("Checking edgeness of tile at (" + row + ", " + column + ")");
         // Basic sanity check.
         if (row < 0 || row > this.kBoardHeight || column < 0 || column > this.kBoardWidth)
         {
