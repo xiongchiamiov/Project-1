@@ -268,6 +268,7 @@ public class Mahjongg2D extends JFrame implements ActionListener
 
         this.secondsElapsed = 0;
         updateStatusBar();
+        setTitle("Mahjongg - board " + this.gameNumber);
     }
     
     protected void startTimer()
