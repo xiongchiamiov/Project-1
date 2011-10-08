@@ -212,7 +212,19 @@ public class Mahjongg2D extends JFrame implements ActionListener
     protected void newGame()
     {
         this.gameNumber++;
-        this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
+        restartGame();
+    }
+
+    protected void restartGame()
+    {
+        if (this.myBoard == null)
+        {
+            this.myBoard = new Tile[this.kBoardHeight][this.kBoardWidth];
+        }
+        else
+        {
+            clearBoard();
+        }
         this.tileCount = 0;
         
         // Make a list of all the tiles, in nice predictable order.
@@ -253,6 +265,9 @@ public class Mahjongg2D extends JFrame implements ActionListener
                 }
             }
         }
+
+        this.secondsElapsed = 0;
+        updateStatusBar();
     }
     
     protected void startTimer()
@@ -285,11 +300,11 @@ public class Mahjongg2D extends JFrame implements ActionListener
         // Does the user want to restart the current game?
         if ("Restart".equals(e.getActionCommand()))
         {
-            // TODO
+            restartGame();
         }
         else if ("New Game".equals(e.getActionCommand()))
         {
-            // TODO
+            newGame();
         }
         else if ("Hint".equals(e.getActionCommand()))
         {
